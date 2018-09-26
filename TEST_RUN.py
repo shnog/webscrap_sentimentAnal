@@ -39,7 +39,7 @@ newlinks = []
 
 #using with here to open the file will automatically close it at the end
 with open(csv_filename, mode='w') as csv_file:
-	writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+	writer = csv.DictWriter(csv_file, fieldnames=fieldnames,delimiter='\t')
 	writer.writeheader()
 	for link in page_soup.findAll('a',attrs={'href':re.compile("^http://")}):
 		newlinks.append(link.get('href'))
