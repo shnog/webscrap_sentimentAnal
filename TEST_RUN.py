@@ -4,7 +4,9 @@ import re
 import csv
 import os.path
 import sys
-from bs4 import BeautifulSoup as soup
+
+from urllib.parse import urlsplit
+
 
 my_url = 'https://finviz.com/news.ashx'
 
@@ -76,12 +78,29 @@ with open(csv_filename, mode='w') as csv_file:
 	writer.writeheader()
 	for link in page_soup.findAll('a',attrs={'href':re.compile("^http://")}):
 		newlinks.append(link.get('href'))
-		#takes away the u in front of the url string for better format
 		article_url = newlinks[i]
 		article_title = links[i].a.text
 		#writes url and title to the csv file
 		writer.writerow({'title': article_title, 'URL' : article_url})
 		i = i + 1
 
-#takes the u in front of the url out on the first link
-#newlinks[0].encode("utf-8")
+urls = {}
+for link in newlinks:
+	#req = requests.get(link)
+	#base_url = "{0.netloc}/".format(urlsplit(link))
+	base_url = f"{urlsplit(link).netloc}"
+	if base_url in urls:
+		urls[base_url] += 1
+	else:
+		urls[base_url] = 1
+
+#Prints how many of each link there are
+
+#list comprehension
+#inspired from https://stackoverflow.com/questions/11228812/print-a-dict-sorted-by-values
+d_view = [ (v,k) for k,v in urls.items() ]
+d_view.sort(reverse=True) # natively sort tuples by first element
+for v,k in d_view:
+    print(f"{k}: {v}")
+#A majority of the links actually go to feedproxy.google.com
+#we need to traverse those links and see where they actually point
