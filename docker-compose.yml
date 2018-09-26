@@ -1,0 +1,8 @@
+version: '3'
+services:
+  bot:
+    build: .
+    command: python3 TEST_RUN.py
+    volumes: # makes articles.csv be written to local directory
+      - .:/code
+#TODO: have code write to an output directory to seperate concerns
