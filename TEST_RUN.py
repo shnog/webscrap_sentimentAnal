@@ -26,7 +26,7 @@ fieldnames = ['title','URL']
 #page_html = uClient.read()
 #uClient.close()
 
-def get_page_html_soup(url: str) -> soup:
+def get_page_html_soup(url: str):
 	req = requests.get(url)
 	page_html = req.content
 	page_soup = soup(page_html,"html.parser")
@@ -35,7 +35,7 @@ def get_page_html_soup(url: str) -> soup:
 
 #Acquire html for page. If should_cache_file is True then cache results.
 
-page_soup: soup = None
+page_soup = None
 if should_cache_file:
 	#if cache file does not exist then create it
 	if not os.path.isfile(html_tmp_cache_filename):
