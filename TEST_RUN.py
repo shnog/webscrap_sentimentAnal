@@ -1,7 +1,7 @@
 import time
 import requests
-from urllib2 import urlopen as uReq
-from bs4 import BeautifulSoup as soup 
+import re
+from bs4 import BeautifulSoup as soup
 
 my_url = 'https://finviz.com/news.ashx'
 
@@ -35,18 +35,18 @@ links = page_soup.findAll("tr",{"class":"nn"})
 
 #puts all links found on webpage into a array
 i = 0
+newlinks = []
 for link in page_soup.findAll('a',attrs={'href':re.compile("^http://")}):
-...     newlinks.append(link.get('href'))
-#takes away the u in front of the url string for better format 
-		article_url = newlinks[i].encode("utf-8")
-		article_title = links[i].a.text
-#writes url and title to the csv file
-		f.write(article_title + "," + article_url + "\n")
+	newlinks.append(link.get('href'))
+	#takes away the u in front of the url string for better format
+	article_url = newlinks[i].encode("utf-8")
+	article_title = links[i].a.text
+	#writes url and title to the csv file
+	f.write(article_title + "," + str(article_url) + "\n")
 
-		i = i + 1
+	i = i + 1
 
 f.close()
 
 #takes the u in front of the url out on the first link
 #newlinks[0].encode("utf-8")
-
