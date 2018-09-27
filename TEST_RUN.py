@@ -2,9 +2,19 @@ import time
 import requests
 import re
 import csv
+import os.path
+import sys
 from bs4 import BeautifulSoup as soup
 
 my_url = 'https://finviz.com/news.ashx'
+
+#Environment Variables to set run configurations
+
+#if True saves response to a file and queries that instead of the web page
+should_cache_file = True
+html_tmp_cache_filename = "temp.html"
+
+
 
 #makes excel file and writes approiate headers
 csv_filename = "articles.csv"
@@ -16,10 +26,33 @@ fieldnames = ['title','URL']
 #page_html = uClient.read()
 #uClient.close()
 
-#gets code from url and turns it in a soup
-req = requests.get(my_url)
-page_html = req.content
-page_soup = soup(page_html,"html.parser")
+def get_page_html_soup(url: str):
+	req = requests.get(url)
+	page_html = req.content
+	page_soup = soup(page_html,"html.parser")
+	return page_soup
+
+
+#Acquire html for page. If should_cache_file is True then cache results.
+
+page_soup = None
+if should_cache_file:
+	#if cache file does not exist then create it
+	if not os.path.isfile(html_tmp_cache_filename):
+		with open(html_tmp_cache_filename,'wb') as temp_file:
+			req = requests.get(my_url)
+			temp_file.write(req.content)
+	#read from cache file
+	try:
+		with open(html_tmp_cache_filename,'rb') as temp_file:
+			page_html = temp_file.read()
+			page_soup = soup(page_html, "html.parser")
+	except FileNotFoundError as fnfe:
+		print(fnfe)
+		sys.exit(1)
+else:
+	#if not cacheing file, load page_soup same way as before
+	page_soup = get_page_html_soup(my_url)
 
 #finds all clickable links as an item
 links = page_soup.findAll("tr",{"class":"nn"})
