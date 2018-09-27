@@ -4,8 +4,8 @@ import csv
 import os.path
 import sys
 import feedparser
-import TEST_RUN as tr
 from bs4 import BeautifulSoup
+import TEST_RUN as tr
 
 reuters_rss_url = "http://feeds.reuters.com/reuters/businessNews"
 feed = feedparser.parse(reuters_rss_url)
