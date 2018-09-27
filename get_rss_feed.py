@@ -1,8 +1,10 @@
 """This module demonstrates consuming an RSS feed with python
 """
 import csv
+import os.path
 import sys
 import feedparser
+import TEST_RUN as tr
 from bs4 import BeautifulSoup
 
 reuters_rss_url = "http://feeds.reuters.com/reuters/businessNews"
@@ -30,6 +32,11 @@ with open(csv_filename, mode='w') as csv_file:
 
 matched_titles = []
 finviz_results_filename = 'articles.csv'
+
+if not os.path.isfile(finviz_results_filename):
+    #generate articles.csv if not exists
+    tr.main()
+
 try:
     with open(finviz_results_filename, mode='r') as article_file:
         article_reader = csv.reader(article_file, delimiter='\t')
@@ -39,11 +46,7 @@ try:
             if title in titles:
                 matched_titles.append(title)
 except FileNotFoundError as fnfe:
-    #TODO: handle this by calling TEST_RUN.py
-    #to call it TEST_RUN should export it's functions as module
-    print()
-    print(f"Could not find {finviz_results_filename}")
-    print("Try running script TEST_RUN.py")
+    print("This should only run if tr.main() failed")
     sys.exit(1) # triggers exit as error
 
 print()
