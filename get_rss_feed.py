@@ -20,5 +20,6 @@ with open(csv_filename, mode='w') as csv_file:
         writer.writerow({'title': title, 'summary': clean_short_description})
         if idx < how_many_to_print:
             print(f"Title: {title}")
-            print(f"Summary: {clean_short_description}")
+            print(f"Clean summary: {clean_short_description}")
+            print(f"Messy summary: {short_description}")
         idx += 1
