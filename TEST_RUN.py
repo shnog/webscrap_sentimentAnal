@@ -1,15 +1,15 @@
 import time
 import requests
 import re
+import csv
 from bs4 import BeautifulSoup as soup
 
 my_url = 'https://finviz.com/news.ashx'
 
 #makes excel file and writes approiate headers
-filename = "articles.csv"
-f = open(filename,"w")
-headers = "title, URL\n"
-f.write(headers)
+csv_filename = "articles.csv"
+fieldnames = ['title','URL']
+
 
 #soup code that works on most websites but not on finviz
 #uClient = uReq(my_url)
@@ -36,17 +36,19 @@ links = page_soup.findAll("tr",{"class":"nn"})
 #puts all links found on webpage into a array
 i = 0
 newlinks = []
-for link in page_soup.findAll('a',attrs={'href':re.compile("^http://")}):
-	newlinks.append(link.get('href'))
-	#takes away the u in front of the url string for better format
-	article_url = newlinks[i].encode("utf-8")
-	article_title = links[i].a.text
-	#writes url and title to the csv file
-	f.write(article_title + "," + str(article_url) + "\n")
 
-	i = i + 1
-
-f.close()
+#using with here to open the file will automatically close it at the end
+with open(csv_filename, mode='w') as csv_file:
+	writer = csv.DictWriter(csv_file, fieldnames=fieldnames,delimiter='\t')
+	writer.writeheader()
+	for link in page_soup.findAll('a',attrs={'href':re.compile("^http://")}):
+		newlinks.append(link.get('href'))
+		#takes away the u in front of the url string for better format
+		article_url = newlinks[i]
+		article_title = links[i].a.text
+		#writes url and title to the csv file
+		writer.writerow({'title': article_title, 'URL' : article_url})
+		i = i + 1
 
 #takes the u in front of the url out on the first link
 #newlinks[0].encode("utf-8")

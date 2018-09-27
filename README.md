@@ -1,6 +1,13 @@
 # webscrap_sentimentAnal
 takes Finviz articles and gives sentiment score
 
+## Setup
+
+To set up this project first install the requirements
+
+```
+pip install -r requirements.txt
+```
 ## Docker setup
 To run the project using docker first install docker.
 Instructions can be found at the bottom of [this page](https://docs.docker.com/install/).
