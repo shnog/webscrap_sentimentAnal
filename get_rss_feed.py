@@ -51,6 +51,7 @@ def download_rss_feed():
                 if title in titles:
                     matched_titles.append(title)
     except FileNotFoundError as fnfe:
+        print(fnfe)
         print("This should only run if tr.main() failed")
         sys.exit(1) # triggers exit as error
 
