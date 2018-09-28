@@ -58,11 +58,13 @@ def save_rss_feed(output_filename='rss_feed_out.csv'):
     Prints article titles found on both reuters rss and finviz"""
 
     fieldnames = ['title', 'summary']
-    with open(output_filename, mode='w') as csv_file:
+    with open(output_filename, mode='w', newline='') as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames, delimiter='\t')
         writer.writeheader()
         for article_info in get_rss_feed():
-            writer.writerow({'title': article_info.title, 'summary': article_info.summary})
+            title = article_info.title
+            summary = article_info.summary
+            writer.writerow({'title': title, 'summary': summary})
 
 
 if __name__ == '__main__':
