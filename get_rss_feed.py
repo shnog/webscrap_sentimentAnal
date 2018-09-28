@@ -32,10 +32,11 @@ with open(csv_filename, mode='w') as csv_file:
 
 matched_titles = []
 finviz_results_filename = 'articles.csv'
-
 if not os.path.isfile(finviz_results_filename):
     #generate articles.csv if not exists
-    tr.main()
+    #You can set should_cache_html_file to determine
+    #if it reloads from finviz each time
+    tr.main(should_cache_html_file=False)
 
 try:
     with open(finviz_results_filename, mode='r') as article_file:

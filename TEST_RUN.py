@@ -5,36 +5,36 @@ import os.path
 import sys
 import requests
 from bs4 import BeautifulSoup as soup
-def main():
+def main(should_cache_html_file=True):
+    """Downloads finviz news and
+    saves a list of titles and links to a CSV file
+
+    If should_cache_html_file is True then checks if temp.html exists
+    If it does exist then use that as html file to parse, otherwise download copy
+    If should_cache_html_file is False then redownload html file each time
+    """
     my_url = 'https://finviz.com/news.ashx'
 
     #Environment Variables to set run configurations
 
     #if True saves response to a file and queries that instead of the web page
-    should_cache_file = True
     html_tmp_cache_filename = "temp.html"
 
     #makes excel file and writes approiate headers
     csv_filename = "articles.csv"
     fieldnames = ['title', 'URL']
 
-
-    #soup code that works on most websites but not on finviz
-    #uClient = uReq(my_url)
-    #page_html = uClient.read()
-    #uClient.close()
-
     def get_page_html_soup(url: str):
+        """Retrieves html from url and creates a soup out of it"""
         req = requests.get(url)
         page_html = req.content
         page_soup = soup(page_html, "html.parser")
         return page_soup
 
 
-    #Acquire html for page. If should_cache_file is True then cache results.
-
+    #Acquire html for page. If should_cache_html_file is True then cache results.
     page_soup = None
-    if should_cache_file:
+    if should_cache_html_file:
         #if cache file does not exist then create it
         if not os.path.isfile(html_tmp_cache_filename):
             with open(html_tmp_cache_filename, 'wb') as temp_file:
@@ -65,7 +65,6 @@ def main():
     #weblink = testlink1.a['href']
 
     #puts all links found on webpage into a array
-    i = 0
     newlinks = []
 
     #using with here to open the file will automatically close it at the end
@@ -79,10 +78,7 @@ def main():
         article_title = links[i].a.text
         #writes url and title to the csv file
         writer.writerow({'title': article_title, 'URL' : article_url})
-        i = i + 1
-
-    #takes the u in front of the url out on the first link
-    #newlinks[0].encode("utf-8")
+        
 
 if __name__ == '__main__':
     main()
