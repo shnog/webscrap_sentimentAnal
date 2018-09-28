@@ -5,7 +5,7 @@ import os.path
 import sys
 import feedparser
 from bs4 import BeautifulSoup
-import get_finviz_articles as get_articles
+from finviz import download_finviz_articles
 
 reuters_rss_url = "http://feeds.reuters.com/reuters/businessNews"
 feed = feedparser.parse(reuters_rss_url)
@@ -36,7 +36,7 @@ if not os.path.isfile(finviz_results_filename):
     #generate articles.csv if not exists
     #You can set should_cache_html_file to determine
     #if it reloads from finviz each time
-    get_articles.main(should_cache_html_file=False)
+    download_finviz_articles(should_cache_html_file=False)
 
 try:
     with open(finviz_results_filename, mode='r') as article_file:

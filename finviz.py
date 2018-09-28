@@ -5,7 +5,7 @@ import os.path
 import sys
 import requests
 from bs4 import BeautifulSoup as soup
-def main(should_cache_html_file=True):
+def download_finviz_articles(should_cache_html_file=True):
     """Downloads finviz news and
     saves a list of titles and links to a CSV file
 
@@ -82,4 +82,4 @@ def main(should_cache_html_file=True):
 
 
 if __name__ == '__main__':
-    main()
+	download_finviz_articles()
