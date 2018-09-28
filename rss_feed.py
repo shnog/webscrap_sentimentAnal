@@ -25,7 +25,7 @@ def get_rss_feed(
     for post in feed.entries:
         title = post.title
         short_description = post.summary
-        clean_short_description = BeautifulSoup(short_description, "lxml").text
+        clean_short_description = BeautifulSoup(short_description, "lxml").text.strip()
         article_infos.append(ArticleInfo(title, clean_short_description))
     return article_infos
 
