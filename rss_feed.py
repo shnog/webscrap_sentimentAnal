@@ -3,33 +3,35 @@
 import csv
 import os.path
 import sys
+from typing import List
+from collections import namedtuple
 import feedparser
 from bs4 import BeautifulSoup
 from finviz import download_finviz_articles
-from typing import NamedTuple, List
-from collections import namedtuple
 
-ArticleInfo = namedtuple('ArticleInfo',['title','summary'])
+
+ArticleInfo = namedtuple('ArticleInfo', ['title', 'summary'])
 
 def get_rss_feed(
-    rss_feed_url='http://feeds.reuters.com/reuters/businessNews'
+        rss_feed_url='http://feeds.reuters.com/reuters/businessNews'
     )-> List[ArticleInfo]:
     """Retrieves content of reuters rss url
     Downloads finviz news titles if it does not exist
     Prints article titles found on both reuters rss and finviz"""
 
     feed = feedparser.parse(rss_feed_url)
-    article_infos : List[ArticleInfo] = []
+    article_infos: List[ArticleInfo] = []
 
     for post in feed.entries:
         title = post.title
         short_description = post.summary
         clean_short_description = BeautifulSoup(short_description, "lxml").text
-        article_infos.append(ArticleInfo(title,clean_short_description))
+        article_infos.append(ArticleInfo(title, clean_short_description))
     return article_infos
 
-def get_matching_articles(rss_feed_article_info_list : List[ArticleInfo],
-    finviz_results_filename = 'articles.csv') -> List[ArticleInfo]:
+def get_matching_articles(rss_feed_article_info_list: List[ArticleInfo],
+                          finviz_results_filename='articles.csv') -> List[ArticleInfo]:
+    """Returns only articles which are on both the rss and the finviz"""
     matched_articles: List[ArticleInfo] = []
 
     if not os.path.isfile(finviz_results_filename):
