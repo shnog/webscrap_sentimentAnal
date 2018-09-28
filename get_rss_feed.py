@@ -6,7 +6,7 @@ import sys
 import feedparser
 from bs4 import BeautifulSoup
 from finviz import download_finviz_articles
-def download_rss_feed():
+def download_rss_feed(output_filename='rss_feed_out.csv'):
     """Retrieves content of reuters rss url
     Downloads finviz news titles if it does not exist
     Prints article titles found on both reuters rss and finviz"""
@@ -16,7 +16,7 @@ def download_rss_feed():
     idx = 0
     how_many_to_print = 1
     fieldnames = ['title', 'summary']
-    csv_filename = 'rss_feed_out.csv'
+    csv_filename = output_filename
     #create a set of titles from the rss
     titles = set()
     with open(csv_filename, mode='w') as csv_file:
