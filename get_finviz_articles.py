@@ -66,19 +66,20 @@ def main(should_cache_html_file=True):
 
     #puts all links found on webpage into a array
     newlinks = []
-
+    i = 0
     #using with here to open the file will automatically close it at the end
     with open(csv_filename, mode='w') as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames, delimiter='\t')
         writer.writeheader()
-    for link in page_soup.findAll('a', attrs={'href':re.compile("^http://")}):
-        newlinks.append(link.get('href'))
-        #takes away the u in front of the url string for better format
-        article_url = newlinks[i]
-        article_title = links[i].a.text
-        #writes url and title to the csv file
-        writer.writerow({'title': article_title, 'URL' : article_url})
-        
+        for link in page_soup.findAll('a', attrs={'href':re.compile("^http://")}):
+            article_url = link.get('href')
+            newlinks.append(article_url)
+            #takes away the u in front of the url string for better format
+            article_title = links[i].a.text
+            #writes url and title to the csv file
+            writer.writerow({'title': article_title, 'URL' : article_url})
+            i += 1
+
 
 if __name__ == '__main__':
     main()
