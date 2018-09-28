@@ -69,7 +69,7 @@ def download_finviz_articles(should_cache_html_file=True):
     i = 0
     #using with here to open the file will automatically close it at the end
     with open(csv_filename, mode='w') as csv_file:
-        writer = csv.DictWriter(csv_file, fieldnames=fieldnames, delimiter='\t')
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames, delimiter='\t', lineterminator='\n')
         writer.writeheader()
         for link in page_soup.findAll('a', attrs={'href':re.compile("^http://")}):
             article_url = link.get('href')

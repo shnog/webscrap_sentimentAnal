@@ -40,14 +40,12 @@ def get_matching_articles(rss_feed_article_info_list: List[ArticleInfo],
         with open(finviz_results_filename, mode='r') as article_file:
             article_reader = csv.reader(article_file, delimiter='\t')
             for row in article_reader:
-                #TODO: sometimes csv writes to file with missing lines
-                if row != []:
-                    finviz_title = row[0]
-                    #check if finviz title was in RSS feed
-                    for article_info in rss_feed_article_info_list:
-                        rss_feed_title = article_info.title
-                        if finviz_title == rss_feed_title:
-                            matched_articles.append(article_info)
+                finviz_title = row[0]
+                #check if finviz title was in RSS feed
+                for article_info in rss_feed_article_info_list:
+                    rss_feed_title = article_info.title
+                    if finviz_title == rss_feed_title:
+                        matched_articles.append(article_info)
     except FileNotFoundError as fnfe:
         print(fnfe)
         sys.exit(1) # triggers exit as error
